@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useLayoutEffect } from "react";
-import { Group, Mesh, Vector3 } from "three";
+import { useRef, useLayoutEffect, useMemo } from "react";
+import { Group, Mesh, Vector3, PlaneGeometry, MeshStandardMaterial } from "three";
 import { RoundedBox, Sphere, Cylinder, Box } from "@react-three/drei";
 import gsap from "gsap";
 
@@ -491,11 +491,11 @@ export default function ConstructionAnimation() {
                         <group ref={craneHookGroupRef} position={[0, 0, 0]}>
                             {/* Hook visual */}
                             <group ref={hookRef}>
-                                <Cylinder args={[0.25, 0.25, 0.5, 16]} position={[0, 0.25, 0]} castShadow>
+                                <Cylinder args={[0.25, 0.25, 0.5, 10]} position={[0, 0.25, 0]} castShadow>
                                     <meshStandardMaterial color={COLORS.craneHook} />
                                 </Cylinder>
                                 <mesh position={[0, -0.15, 0]}>
-                                    <torusGeometry args={[0.2, 0.06, 12, 16, Math.PI]} />
+                                    <torusGeometry args={[0.2, 0.06, 8, 12, Math.PI]} />
                                     <meshStandardMaterial color={COLORS.craneHook} />
                                 </mesh>
                             </group>
@@ -507,10 +507,10 @@ export default function ConstructionAnimation() {
 
                             {/* Carried ball */}
                             <group ref={carriedBallRef} visible={false} position={[0, -1.6, 0]}>
-                                <Sphere args={[0.85, 32, 32]} castShadow>
+                                <Sphere args={[0.85, 16, 16]} castShadow>
                                     <meshStandardMaterial color={COLORS.wreckingBall} metalness={0.3} roughness={0.7} />
                                 </Sphere>
-                                <Cylinder args={[0.06, 0.06, 1]} position={[0, 0.85, 0]}>
+                                <Cylinder args={[0.06, 0.06, 1, 6]} position={[0, 0.85, 0]}>
                                     <meshStandardMaterial color={COLORS.craneCable} />
                                 </Cylinder>
                             </group>
@@ -616,10 +616,10 @@ export default function ConstructionAnimation() {
 
             {/* WRECKING BALL STAND */}
             <group ref={restBallRef} position={[BALL_REST_POS.x, BALL_REST_POS.y, BALL_REST_POS.z]}>
-                <Cylinder args={[0.5, 0.7, 0.6, 16]} position={[0, 0.3, 0]} castShadow receiveShadow>
+                <Cylinder args={[0.5, 0.7, 0.6, 10]} position={[0, 0.3, 0]} castShadow receiveShadow>
                     <meshStandardMaterial color="#6B7280" />
                 </Cylinder>
-                <Sphere args={[0.85, 32, 32]} position={[0, 1.2, 0]} castShadow>
+                <Sphere args={[0.85, 16, 16]} position={[0, 1.2, 0]} castShadow>
                     <meshStandardMaterial color={COLORS.wreckingBall} metalness={0.3} roughness={0.7} />
                 </Sphere>
             </group>
@@ -629,6 +629,13 @@ export default function ConstructionAnimation() {
 
 // Building Block Component
 function BuildingBlock({ color }: { color: string }) {
+    const { windowGeometry, windowMaterial, frameGeometry, frameMaterial } = useMemo(() => ({
+        windowGeometry: new PlaneGeometry(0.35, 0.35),
+        windowMaterial: new MeshStandardMaterial({ color: COLORS.window }),
+        frameGeometry: new PlaneGeometry(1.4, 0.9),
+        frameMaterial: new MeshStandardMaterial({ color: COLORS.windowFrame })
+    }), []);
+
     return (
         <group>
             <RoundedBox args={[BLOCK_SIZE.x, BLOCK_SIZE.y, BLOCK_SIZE.z]} radius={0.08} castShadow receiveShadow>
@@ -646,17 +653,20 @@ function BuildingBlock({ color }: { color: string }) {
                     {/* Window grid 2x2 */}
                     {[-0.3, 0.3].map((x, xi) =>
                         [-0.2, 0.2].map((y, yi) => (
-                            <mesh key={`${xi}-${yi}`} position={[x, y, 0]}>
-                                <planeGeometry args={[0.35, 0.35]} />
-                                <meshStandardMaterial color={COLORS.window} />
-                            </mesh>
+                            <mesh
+                                key={`${xi}-${yi}`}
+                                position={[x, y, 0]}
+                                geometry={windowGeometry}
+                                material={windowMaterial}
+                            />
                         ))
                     )}
                     {/* Frame */}
-                    <mesh position={[0, 0, -0.005]}>
-                        <planeGeometry args={[1.4, 0.9]} />
-                        <meshStandardMaterial color={COLORS.windowFrame} />
-                    </mesh>
+                    <mesh
+                        position={[0, 0, -0.005]}
+                        geometry={frameGeometry}
+                        material={frameMaterial}
+                    />
                 </group>
             ))}
         </group>
@@ -665,20 +675,20 @@ function BuildingBlock({ color }: { color: string }) {
 
 // Wheel Component
 function Wheel({ position }: { position: [number, number, number] }) {
+    const { tireMaterial, rimMaterial, hubMaterial } = useMemo(() => ({
+        tireMaterial: new MeshStandardMaterial({ color: COLORS.truckWheel }),
+        rimMaterial: new MeshStandardMaterial({ color: COLORS.truckWheelRim }),
+        hubMaterial: new MeshStandardMaterial({ color: COLORS.truckWheelRim, metalness: 0.6 })
+    }), []);
+
     return (
         <group position={position} rotation={[Math.PI / 2, 0, 0]}>
             {/* Tire */}
-            <Cylinder args={[0.45, 0.45, 0.5, 20]} castShadow>
-                <meshStandardMaterial color={COLORS.truckWheel} />
-            </Cylinder>
+            <Cylinder args={[0.45, 0.45, 0.5, 12]} castShadow material={tireMaterial} />
             {/* Rim */}
-            <Cylinder args={[0.25, 0.25, 0.52, 20]}>
-                <meshStandardMaterial color={COLORS.truckWheelRim} />
-            </Cylinder>
+            <Cylinder args={[0.25, 0.25, 0.52, 12]} material={rimMaterial} />
             {/* Hub cap */}
-            <Sphere args={[0.15, 16, 16]} position={[0, 0, 0.27]}>
-                <meshStandardMaterial color={COLORS.truckWheelRim} metalness={0.6} />
-            </Sphere>
+            <Sphere args={[0.15, 8, 8]} position={[0, 0, 0.27]} material={hubMaterial} />
         </group>
     );
 }
