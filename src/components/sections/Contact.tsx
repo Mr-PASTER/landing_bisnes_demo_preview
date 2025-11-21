@@ -16,9 +16,8 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle submission
-    console.log("Form submitted", formState);
-    alert("Спасибо за заявку! Мы свяжемся с вами в ближайшее время.");
+    // Redirect to contact website
+    window.open('https://mr-paster.github.io/web/', '_blank');
   };
 
   return (

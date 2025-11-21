@@ -78,7 +78,8 @@ export default function Services() {
               <Card 
                 variant="glass" 
                 hover 
-                className="h-full p-6 flex flex-col justify-between bg-white/5 border-white/10 hover:bg-white/10 transition-colors"
+                className="h-full p-6 flex flex-col justify-between bg-white/5 border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
+                onClick={() => window.open('https://mr-paster.github.io/web/', '_blank')}
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className={cn(

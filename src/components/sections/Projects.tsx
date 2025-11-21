@@ -82,7 +82,11 @@ export default function Projects() {
                     </div>
                     
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <Button variant="secondary" size="sm">
+                      <Button 
+                        variant="secondary" 
+                        size="sm"
+                        onClick={() => window.open('https://mr-paster.github.io/web/', '_blank')}
+                      >
                         Подробнее
                       </Button>
                     </div>
@@ -112,7 +116,12 @@ export default function Projects() {
         </motion.div>
 
         <div className="mt-12 text-center">
-          <Button variant="outline" size="lg" className="group">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="group"
+            onClick={() => window.open('https://mr-paster.github.io/web/', '_blank')}
+          >
             Посмотреть все проекты
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>

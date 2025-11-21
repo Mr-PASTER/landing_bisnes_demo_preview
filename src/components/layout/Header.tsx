@@ -67,7 +67,11 @@ export default function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="secondary" size="sm">
+          <Button 
+            variant="secondary" 
+            size="sm"
+            onClick={() => window.open('https://mr-paster.github.io/web/', '_blank')}
+          >
              Получить консультацию
           </Button>
         </div>
@@ -100,7 +104,10 @@ export default function Header() {
           <Button
             variant="secondary"
             size="lg"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              window.open('https://mr-paster.github.io/web/', '_blank');
+            }}
           >
             Получить консультацию
           </Button>

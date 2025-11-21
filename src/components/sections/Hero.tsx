@@ -51,10 +51,22 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-wrap gap-4"
           >
-            <Button size="lg" className="text-lg px-8">
+            <Button 
+              size="lg" 
+              className="text-lg px-8"
+              onClick={() => window.open('https://mr-paster.github.io/web/', '_blank')}
+            >
               Рассчитать стоимость
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-8"
+              onClick={() => {
+                const projectsSection = document.getElementById('projects');
+                projectsSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Наши проекты
             </Button>
           </motion.div>
