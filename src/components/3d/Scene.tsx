@@ -8,26 +8,33 @@ import { Suspense } from "react";
 export default function Scene() {
   return (
     <div className="w-full h-full absolute inset-0 z-0">
-      <Canvas shadows camera={{ position: [12, 8, 12], fov: 40 }}>
+      <Canvas 
+        shadows 
+        orthographic
+        camera={{ position: [20, 20, 20], zoom: 40, near: 0.1, far: 200 }}
+      >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
+          <color attach="background" args={['#f3f4f6']} />
+          <ambientLight intensity={0.7} />
           <directionalLight
-            position={[10, 10, 5]}
-            intensity={1.5}
+            position={[10, 20, 10]}
+            intensity={1.2}
             castShadow
             shadow-mapSize={[2048, 2048]}
+            shadow-camera-left={-20}
+            shadow-camera-right={20}
+            shadow-camera-top={20}
+            shadow-camera-bottom={-20}
           />
           <Environment preset="city" />
           
           <ConstructionAnimation />
           
           <OrbitControls 
-            enableZoom={false} 
-            enablePan={false}
-            minPolarAngle={Math.PI / 4}
-            maxPolarAngle={Math.PI / 2.2}
-            autoRotate
-            autoRotateSpeed={0.2}
+            enableZoom={true} 
+            enablePan={true}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 2}
           />
         </Suspense>
       </Canvas>
